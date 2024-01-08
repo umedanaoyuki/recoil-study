@@ -37,6 +37,10 @@ function App() {
             }));
         };
 
+        const handleRemove = e => {
+            setTodo(todo.filter(item => item.id !== Number(e.target.dataset.id)))
+        }
+
     return (
         <div>
             <label>
@@ -48,7 +52,9 @@ function App() {
             <ul>
                 {todo.map(item => (
                         <li key={item.id} className={item.isDone ? 'done': ''}>{item.title}
-                            <button　type="button" onClick={handleDone} data-id={item.id}>済</button></li>
+                            <button　type="button" onClick={handleDone} data-id={item.id}>済</button>
+                            <button　type="button" onClick={handleRemove} data-id={item.id}>削除</button>
+                        </li>
                 ))}
             </ul>
         </div>
