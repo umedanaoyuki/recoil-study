@@ -2,13 +2,15 @@ import './App.css';
 import {useRecoilState, useRecoilValue} from "recoil";
 import {todoLastIdSelector, todosAtom} from "./store/atom";
 import {useState} from "react";
+import {idsAtom, todoListSelector} from "./store/atomUp";
+import {type} from "@testing-library/user-event/dist/type";
 
 
 function App() {
 
     const [title, setTitle] = useState('');
-    const [todo, setTodo] = useRecoilState(todosAtom);
-    const maxId = useRecoilValue(todoLastIdSelector);
+    const [todo, setTodo] = useRecoilState(todoListSelector);
+    const [ids, setIds] = useRecoilState(idsAtom);
 
     const handleChangeTitle = e => {
         setTitle(e.target.value);
@@ -16,34 +18,34 @@ function App() {
 
     // 新しいTODOを追加
     const handleClick = () => {
-        setTodo([...todo,{
-            id: maxId +1,
-            title,
-            created: new Date(),
-            isDone: false
-        }
-        ]);
+
+        const newId = Math.max(...(ids.length ? ids : [0])) + 1;
+        setTodo({
+            type: 'add',
+            newItem: {
+                id: newId,
+                title,
+                isDone: false
+            }
+        });
     };
 
         // ステータスを済にする
         const handleDone = e => {
-            setTodo(todo.map(item => {
-                if (item.id === Number(e.target.dataset.id)){
-                    return {
-                        ...item,
-                        isDone: true
-                    };
-                } else {
-                    return item;
-                }
-            }));
+            setTodo({
+                type: 'done',
+                id: Number(e.target.dataset.id)
+            });
         };
 
         // 削除
         const handleRemove = e => {
-            setTodo(todo.filter(item => item.id !== Number(e.target.dataset.id)))
-        }
-
+            setTodo({
+                    type: 'remove',
+                    id: Number(e.target.dataset.id)
+            });
+        };
+        
         // TODOリストの表示
     return (
         <div>
