@@ -1,14 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
-import {useRecoilState} from "recoil";
-import {counterAtom} from "./store/atom";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {todoLastIdSelector, todosAtom} from "./store/atom";
 import {useState} from "react";
 
-let maxId = 0;
+
 function App() {
 
     const [title, setTitle] = useState('');
-    const [todo, setTodo] = useState([]);
+    const [todo, setTodo] = useRecoilState(todosAtom);
+    const maxId = useRecoilValue(todoLastIdSelector);
 
     const handleChangeTitle = e => {
         setTitle(e.target.value);
@@ -16,7 +16,7 @@ function App() {
 
     const handleClick = () => {
         setTodo([...todo,{
-            id: ++maxId,
+            id: maxId +1,
             title,
             created: new Date(),
             isDone: false
