@@ -14,6 +14,7 @@ function App() {
         setTitle(e.target.value);
     };
 
+    // 新しいTODOを追加
     const handleClick = () => {
         setTodo([...todo,{
             id: maxId +1,
@@ -24,6 +25,7 @@ function App() {
         ]);
     };
 
+        // ステータスを済にする
         const handleDone = e => {
             setTodo(todo.map(item => {
                 if (item.id === Number(e.target.dataset.id)){
@@ -37,10 +39,12 @@ function App() {
             }));
         };
 
+        // 削除
         const handleRemove = e => {
             setTodo(todo.filter(item => item.id !== Number(e.target.dataset.id)))
         }
 
+        // TODOリストの表示
     return (
         <div>
             <label>
